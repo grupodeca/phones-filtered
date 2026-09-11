@@ -1,0 +1,13 @@
+# Requerimientos
+
+1. Tener el proyecto de phones-filtered.php en Github en la siguiente URL: https://github.com/grupodeca/phones-filtered.git
+2. Tener en el proyecto con CHANGELOG.md, DIAGRAM.md, README.md, VERSION.
+3. Al primer commit de este PHP script ya existe como version 1.0.
+4. Cada vez que se haga una modificaion la version se aumenta un decimal. Ej. 1.0, 1.1, 1.2 etc.
+
+# Objetivo
+
+1. Corregir el filtro "Exportar Internacional" (https://www.decawebservice-01.com/telcel/phones-filtered.php?export=intl) ahora tiene que filtrar la lineas internacionales con las siguientes opciones que son condiciones OR:
+  1.1. lineas que empiecen con '+', empiece con '1' y en total sean 11 digitos. Ej. +14243090604.
+  1.2. Lineas que empiecen con '1', no empiecen con '+' y en total tenga 11 digitos. Ej. 16615209812
+  1.3. Para filtrar se toma la opcion 1.1, 1.2 con un OR. Ej. se debe verificar la opcion 1.1 luego la opcion 1.2, al final deben salir como en el resultado lineas internacionales como: +14243090604, +15303589169, 16615209812, 16615200392, +13239701924.
