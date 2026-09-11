@@ -10,7 +10,7 @@
 	<!-- jQuery 3.7.1 -->
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-	<title>Líneas telefónicas sin reportar - v1.6</title>
+	<title>Líneas telefónicas sin reportar - v1.7</title>
 
 	<style>
 		.range-block { display: block; }
@@ -22,7 +22,7 @@
 
 <?php
 // =====================================
-// phones-filtered.php — versión 1.6
+// phones-filtered.php — versión 1.7
 // Compatible con PHP 5.4.16
 // =====================================
 
@@ -57,6 +57,12 @@ $minutos = array(
 	361 => 1440
 );
 
+// Líneas internacionales válidas:
+// 1) +1 seguido de 10 dígitos: +14243090604
+// 2)  1 seguido de 10 dígitos: 16615209812
+// Las dos condiciones se evalúan con OR.
+$where_internacional = "(phoneNumber REGEXP '^[+]1[0-9]{10}$' OR phoneNumber REGEXP '^1[0-9]{10}$')";
+
 echo "<h3 class='mb-3'>" . date('Y-m-d H:i:s T') . "</h3>";
 
 $offset = date('Z') / 3600;
@@ -78,7 +84,7 @@ if (isset($_GET['export'])) {
 		$where_number = "phoneNumber LIKE '844%'";
 	} else {
 		$filename = "phone-filtered-internacional.txt";
-		$where_number = "phoneNumber LIKE '+%'";
+		$where_number = $where_internacional;
 	}
 
 	$fh = fopen($filename, "w");
@@ -235,7 +241,7 @@ foreach ($minutos as $from => $to) {
 			SELECT COUNT(*) AS c
 			FROM pwd5_server.gps_info i
 			WHERE isValid = 1
-			AND phoneNumber LIKE '+%'
+			AND $where_internacional
 			AND reportDate < ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
 			AND reportDate > ADDDATE(UTC_TIMESTAMP(), INTERVAL -$to MINUTE)
 			AND phoneNumber != 0
