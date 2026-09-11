@@ -5,6 +5,7 @@
 3. Al primer commit de este PHP script ya existe como version 1.6.
 4. Cada vez que se haga una modificaion la version se aumenta un decimal. Ej. 1.0, 1.1, 1.2 etc.
 5. Todos los cambios que se pidan no los vas a subir a Github. Me vas a mostrar siempre la nueva version en la pantalla del navegador para hacerle copy. Yo soy quien va a subir manualmente desde macOS los cambios que me pases. Conclusion todos los cambios que hagas me tienes que dar la opcion de descargarlos en el chat o hacerles copy/paste.
+6. Actualizar la version de bootstrap a la ultima version del release 5.3.x sin que se rompa nada en la vista de la pagina. Se tiene que ver igual como esta ahorita y tener el mismo funcionamiento que tiene ahorita.
 
 # Objetivo
 
