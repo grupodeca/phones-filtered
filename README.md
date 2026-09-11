@@ -12,8 +12,10 @@ El archivo `VERSION` contiene la versión vigente del proyecto.
 
 - PHP 5.4.16
 - MySQL 5.7
-- Bootstrap 5.3.2
+- Bootstrap 5.3.8
 - jQuery 3.7.1
+
+Bootstrap se carga desde el CDN oficial recomendado por Bootstrap/jsDelivr. La versión 1.7 actualiza únicamente el patch release de Bootstrap 5.3.x, de 5.3.2 a 5.3.8, conservando la misma estructura y clases de la vista.
 
 ## Funcionalidad principal
 

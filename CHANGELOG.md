@@ -4,6 +4,11 @@ Todos los cambios relevantes del proyecto se documentan en este archivo.
 
 ## 1.7 - 2026-09-11
 
+### Actualizado
+
+- Se actualizó Bootstrap de `5.3.2` a `5.3.8`, última versión disponible de la rama `5.3.x`.
+- Se conservaron la estructura HTML, las clases Bootstrap existentes y el comportamiento de la página para no alterar la vista ni su funcionamiento.
+
 ### Corregido
 
 - Se corrigió el filtro de **Exportar Internacional**.
