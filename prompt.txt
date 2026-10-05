@@ -13,3 +13,4 @@
   1.1. lineas que empiecen con '+', empiece con '1' y en total sean 11 digitos. Ej. +14243090604.
   1.2. Lineas que empiecen con '1', no empiecen con '+' y en total tenga 11 digitos. Ej. 16615209812
   1.3. Para filtrar se toma la opcion 1.1, 1.2 con un OR. Ej. se debe verificar la opcion 1.1 luego la opcion 1.2, al final deben salir como en el resultado lineas internacionales como: +14243090604, +15303589169, 16615209812, 16615200392, +13239701924.
+2. Cuando oprimo el boton "Exportar Internacional" y se genera el archivo "https://www.decawebservice-01.com/telcel/phone-filtered-internacional.txt", el archivo txt sigue mostrando solo lineas como esta "+18024418177", no salen todas como se indica en el paso 1.
