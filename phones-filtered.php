@@ -10,7 +10,7 @@
 	<!-- jQuery 3.7.1 -->
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-	<title>Líneas telefónicas sin reportar - v1.7</title>
+	<title>Líneas telefónicas sin reportar - v1.9</title>
 
 	<style>
 		.range-block { display: block; }
@@ -22,7 +22,7 @@
 
 <?php
 // =====================================
-// phones-filtered.php — versión 1.8
+// phones-filtered.php — versión 1.9
 // Compatible con PHP 5.4.16
 // =====================================
 
@@ -99,7 +99,7 @@ if (isset($_GET['export'])) {
 			FROM pwd5_server.gps_info i
 			WHERE isValid = 1
 			AND $where_number
-			AND reportDate < ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
+			AND reportDate <= ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
 			AND reportDate > ADDDATE(UTC_TIMESTAMP(), INTERVAL -$to MINUTE)
 			AND phoneNumber IS NOT NULL
 			AND phoneNumber != 0
@@ -110,8 +110,8 @@ if (isset($_GET['export'])) {
 		$rA = mysqli_query($PY_DB1_server, $sql_tipo_count);
 		$X = intval(mysqli_fetch_array($rA)['c']);
 
-		$header = "-- Líneas de $from min (" . round(($from-1)/60,2) .
-				  " hr) a $to min (" . round($to/60,2) . " hr) sin reportar ($X)\n";
+		$header = "-- Líneas de $from min (" . round($from/60, 2) .
+				  " hr) a $to min (" . round($to/60, 2) . " hr) sin reportar ($X)\n";
 
 		fwrite($fh, $header);
 
@@ -120,7 +120,7 @@ if (isset($_GET['export'])) {
 			FROM pwd5_server.gps_info i
 			WHERE isValid = 1
 			AND $where_number
-			AND reportDate < ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
+			AND reportDate <= ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
 			AND reportDate > ADDDATE(UTC_TIMESTAMP(), INTERVAL -$to MINUTE)
 			AND phoneNumber IS NOT NULL
 			AND phoneNumber != 0
@@ -164,8 +164,8 @@ if (isset($_GET['export'])) {
 	<div class="row mb-3">
 		<?php
 		foreach ($minutos as $from => $to) {
-			$label = "Líneas de $from min (" . round(($from-1)/60,2) .
-					" hr) a $to min (" . round($to/60,2) . " hr)";
+			$label = "Líneas de $from min (" . round($from/60, 2) .
+					" hr) a $to min (" . round($to/60, 2) . " hr)";
 			$range_id = "range_{$from}_{$to}";
 			echo "
 			<div class='col-md-6'>
@@ -208,7 +208,7 @@ foreach ($minutos as $from => $to) {
 		SELECT COUNT(*) AS count
 		FROM pwd5_server.gps_info i
 		WHERE isValid = 1
-		AND reportDate < ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
+		AND reportDate <= ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
 		AND reportDate > ADDDATE(UTC_TIMESTAMP(), INTERVAL -$to MINUTE)
 		AND reportDate != '0000-00-00 00:00:00'
 		AND phoneNumber != 0
@@ -227,7 +227,7 @@ foreach ($minutos as $from => $to) {
 			FROM pwd5_server.gps_info i
 			WHERE isValid = 1
 			AND phoneNumber LIKE '844%'
-			AND reportDate < ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
+			AND reportDate <= ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
 			AND reportDate > ADDDATE(UTC_TIMESTAMP(), INTERVAL -$to MINUTE)
 			AND phoneNumber != 0
 			AND phoneNumber IS NOT NULL
@@ -242,7 +242,7 @@ foreach ($minutos as $from => $to) {
 			FROM pwd5_server.gps_info i
 			WHERE isValid = 1
 			AND $where_internacional
-			AND reportDate < ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
+			AND reportDate <= ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
 			AND reportDate > ADDDATE(UTC_TIMESTAMP(), INTERVAL -$to MINUTE)
 			AND phoneNumber != 0
 			AND phoneNumber IS NOT NULL
@@ -261,7 +261,7 @@ foreach ($minutos as $from => $to) {
 			FROM pwd5_server.gps_info i
 			LEFT JOIN gps_types t ON (i.idGPSType = t.idGPSType)
 			WHERE isValid = 1
-			AND reportDate < ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
+			AND reportDate <= ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
 			AND reportDate > ADDDATE(UTC_TIMESTAMP(), INTERVAL -$to MINUTE)
 			AND phoneNumber != 0
 			AND phoneNumber IS NOT NULL
@@ -276,8 +276,8 @@ foreach ($minutos as $from => $to) {
 
 		echo "<div class='range-block mb-5' id='$block_id'>";
 
-		echo "<h4>Líneas de $from min (" . (($from - 1)/60) .
-			" hr) a $to min (" . ($to/60) . " hr) sin reportar ($count)</h4>";
+		echo "<h4>Líneas de $from min (" . round($from/60, 2) .
+			" hr) a $to min (" . round($to/60, 2) . " hr) sin reportar ($count)</h4>";
 
 		echo "<p class='ms-3'>
 				<strong>Telcel:</strong> $TELCEL<br>

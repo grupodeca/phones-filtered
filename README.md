@@ -4,7 +4,7 @@ Aplicación PHP para consultar líneas telefónicas asociadas a dispositivos GPS
 
 ## Versión
 
-Versión actual: **1.7**
+Versión actual: **1.9**
 
 El archivo `VERSION` contiene la versión vigente del proyecto.
 
@@ -15,19 +15,21 @@ El archivo `VERSION` contiene la versión vigente del proyecto.
 - Bootstrap 5.3.8
 - jQuery 3.7.1
 
-Bootstrap se carga desde el CDN oficial recomendado por Bootstrap/jsDelivr. La versión 1.7 actualiza únicamente el patch release de Bootstrap 5.3.x, de 5.3.2 a 5.3.8, conservando la misma estructura y clases de la vista.
+Bootstrap se carga desde jsDelivr usando la versión 5.3.8 y sus valores SRI (`integrity`) correspondientes.
 
 ## Funcionalidad principal
 
-La página consulta `pwd5_server.gps_info` y muestra dispositivos válidos agrupados por rangos de minutos sin reportar:
+La página consulta `pwd5_server.gps_info` y muestra dispositivos válidos agrupados por rangos continuos de minutos sin reportar:
 
-- 10 a 60 minutos
-- 61 a 120 minutos
-- 121 a 180 minutos
-- 181 a 240 minutos
-- 241 a 300 minutos
-- 301 a 360 minutos
-- 361 a 1440 minutos
+- 10 <= minutos < 60
+- 60 <= minutos < 120
+- 120 <= minutos < 180
+- 180 <= minutos < 240
+- 240 <= minutos < 300
+- 300 <= minutos < 360
+- 360 <= minutos < 1440
+
+Los límites se manejan como intervalos `[from, to)`: el límite inicial está incluido y el límite final no. Por ejemplo, una línea con exactamente 60 minutos pertenece al rango `60 <= minutos < 120`, no al rango anterior.
 
 Permite:
 
@@ -36,6 +38,17 @@ Permite:
 - Filtrar IDs concretos con `?ids=ID1,ID2,...`.
 - Exportar líneas Telcel con `?export=telcel`.
 - Exportar líneas internacionales con `?export=intl`.
+
+## Filtro de tiempo
+
+Todas las consultas que trabajan con los rangos usan:
+
+```sql
+reportDate <= ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
+AND reportDate > ADDDATE(UTC_TIMESTAMP(), INTERVAL -$to MINUTE)
+```
+
+Esto evita huecos y evita que una misma línea aparezca en dos rangos contiguos.
 
 ## Filtro Telcel
 
@@ -47,7 +60,7 @@ phoneNumber LIKE '844%'
 
 ## Filtro Internacional
 
-Desde la versión 1.7 una línea se considera internacional solamente cuando cumple una de estas dos condiciones:
+Una línea se considera internacional solamente cuando cumple una de estas dos condiciones:
 
 1. Tiene `+`, después comienza con `1` y contiene exactamente 11 dígitos numéricos después del signo `+`.
    - Ejemplo: `+14243090604`
@@ -58,8 +71,8 @@ La condición usada por MySQL es:
 
 ```sql
 (
-    phoneNumber REGEXP '^[+]1[0-9]{10}$'
-    OR phoneNumber REGEXP '^1[0-9]{10}$'
+	phoneNumber REGEXP '^[+]1[0-9]{10}$'
+	OR phoneNumber REGEXP '^1[0-9]{10}$'
 )
 ```
 
@@ -88,8 +101,4 @@ Ejemplos que deben incluirse:
 
 La versión inicial registrada del script es `1.6`.
 
-Cada modificación funcional incrementa un decimal:
-
-```text
-1.6 -> 1.7 -> 1.8 -> 1.9 -> 2.0
-```
+La versión actual de esta entrega es `1.9`.
