@@ -28,7 +28,7 @@
 
 date_default_timezone_set('America/Monterrey');
 
-$PY_DB1_server = mysqli_connect("34.27.218.198","root","mysqldeca","pwd5_server");
+$PY_DB1_server = mysqli_connect("10.56.1.233","root","mysqldeca","pwd5_server");
 if (mysqli_connect_errno()) {
 	echo "<div class='alert alert-danger'>Error conectando a MySQL: " . mysqli_connect_error() . "</div>";
 	exit;
@@ -253,7 +253,7 @@ foreach ($minutos as $from => $to) {
 		$INTL = intval(mysqli_fetch_array(mysqli_query($PY_DB1_server, $sql_intl))['c']);
 
 		$sql = "
-			SELECT 
+			SELECT
 				idGPS,
 				phoneNumber,
 				ADDDATE(reportDate, INTERVAL $offset HOUR) AS reportDate,
