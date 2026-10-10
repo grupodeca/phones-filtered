@@ -22,7 +22,7 @@
 
 <?php
 // =====================================
-// phones-filtered.php — versión 1.7
+// phones-filtered.php — versión 1.8
 // Compatible con PHP 5.4.16
 // =====================================
 
@@ -49,12 +49,12 @@ if (array_key_exists("ids", $_GET)) {
 
 $minutos = array(
 	10  => 60,
-	61  => 120,
-	121 => 180,
-	181 => 240,
-	241 => 300,
-	301 => 360,
-	361 => 1440
+	60  => 120,
+	120 => 180,
+	180 => 240,
+	240 => 300,
+	300 => 360,
+	360 => 1440
 );
 
 // Líneas internacionales válidas:
