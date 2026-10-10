@@ -1,9 +1,10 @@
-# Diagrama funcional — phones-filtered v1.9
+# Diagrama funcional — phones-filtered v1.10
 
 ```mermaid
 flowchart TD
 	A[Petición HTTP a phones-filtered.php] --> B[Conectar a pwd5_server]
-	B --> C[Leer parámetros extra, ids y export]
+	B --> B1[Fijar now_utc una sola vez]
+	B1 --> C[Leer parámetros extra, ids y export]
 	C --> D[Definir rangos continuos de tiempo]
 	D --> D1[Aplicar intervalo from <= antigüedad < to]
 	D1 --> E{¿Se solicitó export?}
@@ -31,7 +32,7 @@ flowchart TD
 	O --> Q[Aplicar filtro visual de rangos con jQuery]
 ```
 
-## Rangos de tiempo de la versión 1.9
+## Rangos de tiempo de la versión 1.10
 
 ```text
 [10, 60)
@@ -43,14 +44,20 @@ flowchart TD
 [360, 1440)
 ```
 
-En SQL se implementan como:
+La versión 1.10 fija una sola referencia UTC al inicio:
 
-```sql
-reportDate <= ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
-AND reportDate > ADDDATE(UTC_TIMESTAMP(), INTERVAL -$to MINUTE)
+```php
+$now_utc = gmdate('Y-m-d H:i:s');
 ```
 
-Esto hace que cada frontera pertenezca a un solo rango y que no existan huecos.
+En SQL los rangos se implementan usando siempre ese mismo timestamp:
+
+```sql
+reportDate <= ADDDATE('$now_utc', INTERVAL -$from MINUTE)
+AND reportDate > ADDDATE('$now_utc', INTERVAL -$to MINUTE)
+```
+
+Esto hace que cada frontera pertenezca a un solo rango, que no existan huecos y que un registro no pueda cambiar de periodo durante la misma ejecución por el paso del tiempo entre consultas.
 
 ## Regla internacional
 

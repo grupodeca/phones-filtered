@@ -10,7 +10,7 @@
 	<!-- jQuery 3.7.1 -->
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-	<title>Líneas telefónicas sin reportar - v1.9</title>
+	<title>Líneas telefónicas sin reportar - v1.10</title>
 
 	<style>
 		.range-block { display: block; }
@@ -22,11 +22,14 @@
 
 <?php
 // =====================================
-// phones-filtered.php — versión 1.9
+// phones-filtered.php — versión 1.10
 // Compatible con PHP 5.4.16
 // =====================================
 
 date_default_timezone_set('America/Monterrey');
+
+// Fijar una sola referencia UTC para toda la ejecución.
+$now_utc = gmdate('Y-m-d H:i:s');
 
 $PY_DB1_server = mysqli_connect("10.56.1.233","root","mysqldeca","pwd5_server");
 if (mysqli_connect_errno()) {
@@ -99,8 +102,8 @@ if (isset($_GET['export'])) {
 			FROM pwd5_server.gps_info i
 			WHERE isValid = 1
 			AND $where_number
-			AND reportDate <= ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
-			AND reportDate > ADDDATE(UTC_TIMESTAMP(), INTERVAL -$to MINUTE)
+			AND reportDate <= ADDDATE('$now_utc', INTERVAL -$from MINUTE)
+			AND reportDate > ADDDATE('$now_utc', INTERVAL -$to MINUTE)
 			AND phoneNumber IS NOT NULL
 			AND phoneNumber != 0
 			AND i.idgpstype NOT IN (59,60,82,78,105,106)
@@ -120,8 +123,8 @@ if (isset($_GET['export'])) {
 			FROM pwd5_server.gps_info i
 			WHERE isValid = 1
 			AND $where_number
-			AND reportDate <= ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
-			AND reportDate > ADDDATE(UTC_TIMESTAMP(), INTERVAL -$to MINUTE)
+			AND reportDate <= ADDDATE('$now_utc', INTERVAL -$from MINUTE)
+			AND reportDate > ADDDATE('$now_utc', INTERVAL -$to MINUTE)
 			AND phoneNumber IS NOT NULL
 			AND phoneNumber != 0
 			AND i.idgpstype NOT IN (59,60,82,78,105,106)
@@ -208,8 +211,8 @@ foreach ($minutos as $from => $to) {
 		SELECT COUNT(*) AS count
 		FROM pwd5_server.gps_info i
 		WHERE isValid = 1
-		AND reportDate <= ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
-		AND reportDate > ADDDATE(UTC_TIMESTAMP(), INTERVAL -$to MINUTE)
+		AND reportDate <= ADDDATE('$now_utc', INTERVAL -$from MINUTE)
+		AND reportDate > ADDDATE('$now_utc', INTERVAL -$to MINUTE)
 		AND reportDate != '0000-00-00 00:00:00'
 		AND phoneNumber != 0
 		AND phoneNumber IS NOT NULL
@@ -227,8 +230,8 @@ foreach ($minutos as $from => $to) {
 			FROM pwd5_server.gps_info i
 			WHERE isValid = 1
 			AND phoneNumber LIKE '844%'
-			AND reportDate <= ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
-			AND reportDate > ADDDATE(UTC_TIMESTAMP(), INTERVAL -$to MINUTE)
+			AND reportDate <= ADDDATE('$now_utc', INTERVAL -$from MINUTE)
+			AND reportDate > ADDDATE('$now_utc', INTERVAL -$to MINUTE)
 			AND phoneNumber != 0
 			AND phoneNumber IS NOT NULL
 			AND i.idgpstype NOT IN (59,60,82,78,105,106)
@@ -242,8 +245,8 @@ foreach ($minutos as $from => $to) {
 			FROM pwd5_server.gps_info i
 			WHERE isValid = 1
 			AND $where_internacional
-			AND reportDate <= ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
-			AND reportDate > ADDDATE(UTC_TIMESTAMP(), INTERVAL -$to MINUTE)
+			AND reportDate <= ADDDATE('$now_utc', INTERVAL -$from MINUTE)
+			AND reportDate > ADDDATE('$now_utc', INTERVAL -$to MINUTE)
 			AND phoneNumber != 0
 			AND phoneNumber IS NOT NULL
 			AND i.idgpstype NOT IN (59,60,82,78,105,106)
@@ -261,8 +264,8 @@ foreach ($minutos as $from => $to) {
 			FROM pwd5_server.gps_info i
 			LEFT JOIN gps_types t ON (i.idGPSType = t.idGPSType)
 			WHERE isValid = 1
-			AND reportDate <= ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
-			AND reportDate > ADDDATE(UTC_TIMESTAMP(), INTERVAL -$to MINUTE)
+			AND reportDate <= ADDDATE('$now_utc', INTERVAL -$from MINUTE)
+			AND reportDate > ADDDATE('$now_utc', INTERVAL -$to MINUTE)
 			AND phoneNumber != 0
 			AND phoneNumber IS NOT NULL
 			AND reportDate != '0000-00-00 00:00:00'

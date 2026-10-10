@@ -4,7 +4,7 @@ Aplicación PHP para consultar líneas telefónicas asociadas a dispositivos GPS
 
 ## Versión
 
-Versión actual: **1.9**
+Versión actual: **1.10**
 
 El archivo `VERSION` contiene la versión vigente del proyecto.
 
@@ -49,6 +49,23 @@ AND reportDate > ADDDATE(UTC_TIMESTAMP(), INTERVAL -$to MINUTE)
 ```
 
 Esto evita huecos y evita que una misma línea aparezca en dos rangos contiguos.
+
+Además, la versión 1.10 fija una sola referencia UTC al inicio de la ejecución:
+
+```php
+$now_utc = gmdate('Y-m-d H:i:s');
+```
+
+Todas las consultas de rangos usan ese mismo valor:
+
+```sql
+reportDate <= ADDDATE('$now_utc', INTERVAL -$from MINUTE)
+AND reportDate > ADDDATE('$now_utc', INTERVAL -$to MINUTE)
+```
+
+Esto evita que un registro pueda cambiar de rango por los segundos transcurridos entre consultas distintas dentro de una misma ejecución.
+
+Las etiquetas de horas se calculan con `$from/60` y `$to/60`. Por ejemplo, `10 min = 0.1667 hr`, por lo que redondeado a dos decimales se muestra correctamente como `0.17 hr`.
 
 ## Filtro Telcel
 
@@ -101,4 +118,4 @@ Ejemplos que deben incluirse:
 
 La versión inicial registrada del script es `1.6`.
 
-La versión actual de esta entrega es `1.9`.
+La versión actual de esta entrega es `1.10`.

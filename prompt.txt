@@ -44,3 +44,18 @@ Esto representa rangos de antigüedad [from, to), por ejemplo:
 De esta forma una linea con exactamente 60 minutos pertenece solamente al segundo rango, una de exactamente 120 minutos solamente al tercero, etc.
 
   2.3. Las etiquetas de horas deben calcularse con "$from/60" y "$to/60". No se debe restar 1 a "$from", ya que con los nuevos limites produciria valores incorrectos como 0.98 hr para 60 minutos.
+
+3. Fijar una sola hora UTC al inicio de cada ejecución para que todos los rangos de tiempo usen exactamente la misma referencia temporal.
+  3.1. Definir una sola vez:
+```php
+$now_utc = gmdate('Y-m-d H:i:s');
+```
+  3.2. Todas las consultas que filtran por "$from" y "$to" deben usar "$now_utc" en lugar de ejecutar "UTC_TIMESTAMP()" de forma independiente:
+```sql
+reportDate <= ADDDATE('$now_utc', INTERVAL -$from MINUTE)
+AND reportDate > ADDDATE('$now_utc', INTERVAL -$to MINUTE)
+```
+De esta forma un registro no puede cambiar de periodo durante la misma ejecución por los segundos transcurridos entre una consulta y otra.
+
+4. Mantener las etiquetas de horas calculadas con "$from/60" y "$to/60", redondeadas a dos decimales. Por ejemplo, 10 minutos equivalen a 0.1667 horas y deben mostrarse como "0.17 hr". No volver a usar "($from-1)/60".
+

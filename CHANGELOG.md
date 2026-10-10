@@ -2,6 +2,22 @@
 
 Todos los cambios relevantes del proyecto se documentan en este archivo.
 
+## 1.10 - 2026-10-09
+
+### Corregido
+
+- Se fijó una sola referencia UTC al inicio de cada ejecución con `$now_utc = gmdate('Y-m-d H:i:s');`.
+- Todas las consultas de rangos de tiempo usan ahora el mismo `$now_utc` en lugar de evaluar `UTC_TIMESTAMP()` de forma independiente.
+- Esto evita que un registro pueda cambiar de periodo durante la misma ejecución por el paso de segundos entre consultas.
+- Se mantienen los rangos con semántica `[from, to)` para evitar huecos y duplicados en las fronteras.
+- Se confirmó que `10 min` equivale a `0.1667 hr` y debe mostrarse como `0.17 hr` al redondear a dos decimales.
+- Se conserva el cálculo de etiquetas con `$from/60` y `$to/60`; no se resta 1 a `$from`.
+
+### Versionado
+
+- Se actualizó la versión del proyecto de `1.9` a `1.10`.
+- Se sincronizaron `phones-filtered.php`, `VERSION`, `README.md`, `CHANGELOG.md`, `DIAGRAM.md` y `prompt.txt`.
+
 ## 1.9 - 2026-10-09
 
 ### Corregido
