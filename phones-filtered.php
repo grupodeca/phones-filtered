@@ -7,6 +7,9 @@
 	<!-- Bootstrap 5.3.8 CSS -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
+	<!-- Bootstrap Icons -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.2/font/bootstrap-icons.min.css">
+
 	<!-- jQuery 3.7.1 -->
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
@@ -71,24 +74,36 @@ echo "<h3 class='mb-3'>" . date('Y-m-d H:i:s T') . "</h3>";
 $offset = date('Z') / 3600;
 
 // Notas informativas: acordeón Bootstrap cerrado inicialmente.
-echo "<div class='accordion mb-4' id='notasAccordion'>
-        <div class='accordion-item'>
-            <h2 class='accordion-header' id='notasHeading'>
-                <button class='accordion-button collapsed' type='button' data-bs-toggle='collapse'
-                    data-bs-target='#notasCollapse' aria-expanded='false' aria-controls='notasCollapse'>
-                    Notas
-                </button>
-            </h2>
-            <div id='notasCollapse' class='accordion-collapse collapse'
-                aria-labelledby='notasHeading' data-bs-parent='#notasAccordion'>
-                <div class='accordion-body'>";
-echo "<div class='alert alert-primary'>Helpdesk Telcel puede realizar <strong>RESETEO</strong> de línea, borra la sesión de datos ya sea 2G, 3G, 4G o 5G.</div>";
-echo "<div class='alert alert-primary'>Helpdesk Telcel puede realizar <strong>BORRADO DE REGISTRO</strong>, desconecta la línea de la red móvil de Telcel.</div>";
-echo "<div class='alert alert-primary'>PDPs = sesiones activas en el APN DECA.ITELCEL.COM.</div>";
-echo "        </div>
-            </div>
-        </div>
-    </div>";
+echo "
+<div class='accordion mb-4' id='notasAccordion'>
+	<div class='accordion-item border border-primary'
+		 style='--bs-accordion-border-color: var(--bs-primary); border-color: var(--bs-primary) !important;'>
+		<h2 class='accordion-header' id='notasHeading'>
+			<button class='accordion-button collapsed' type='button'
+				data-bs-toggle='collapse'
+				data-bs-target='#notasCollapse'
+				aria-expanded='false'
+				aria-controls='notasCollapse'>
+
+				<i class='bi bi-exclamation-circle text-primary me-2' aria-hidden='true'></i>
+				Notas
+			</button>
+		</h2>
+
+		<div id='notasCollapse'
+			 class='accordion-collapse collapse'
+			 aria-labelledby='notasHeading'
+			 data-bs-parent='#notasAccordion'>
+			<div class='accordion-body'>
+				<ul class='list-unstyled mb-0'>
+					<li><strong>RESETEO:</strong> Helpdesk Telcel puede realizar <strong>RESETEO</strong> de línea, borra la sesión de datos ya sea 2G, 3G, 4G o 5G.</li>
+					<li><strong>BORRADO DE REGISTRO:</strong> Helpdesk Telcel puede realizar <strong>BORRADO DE REGISTRO</strong>, desconecta la línea de la red móvil de Telcel.</li>
+					<li><strong>PDPs:</strong> Sesiones activas en el APN DECA.ITELCEL.COM.</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>";
 
 // =====================================
 // EXPORTACIÓN TXT
