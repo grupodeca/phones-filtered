@@ -2,6 +2,24 @@
 
 Todos los cambios relevantes del proyecto se documentan en este archivo.
 
+## 1.11 - 2026-11-09
+
+### Agregado
+
+- Tercer botón `Exportar Webservice` a la derecha de `Exportar Internacional` (`?export=webservice`).
+- Exportación a `phone-filtered-webservice.txt` con `i.idgpstype IN (59,60)` en consultas de conteo y detalle.
+- El nuevo tipo no impone prefijo telefónico (`$where_number = "1=1"`) y mantiene el resto de filtros compartidos.
+
+### Conservado
+
+- Exportaciones Telcel/Internacional con `i.idgpstype NOT IN (59,60,82,78,105,106)`.
+- Referencia única `$now_utc`, rangos continuos, Bootstrap 5.3.8 y lógica de la tabla principal.
+
+### Versionado y documentación
+
+- `prompt.txt` comienza con `# Version 1.11`, coincidiendo con `phones-filtered.php` y `VERSION`.
+- README y diagrama documentan la nueva exportación y sus condiciones.
+
 ## 1.10 - 2026-10-09
 
 ### Corregido

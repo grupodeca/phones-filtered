@@ -1,10 +1,10 @@
 # phones-filtered
 
-Aplicación PHP para consultar líneas telefónicas asociadas a dispositivos GPS que han dejado de reportar dentro de diferentes rangos de tiempo y exportar subconjuntos de líneas Telcel o internacionales.
+Aplicación PHP para consultar líneas telefónicas asociadas a dispositivos GPS que han dejado de reportar dentro de diferentes rangos de tiempo y exportar subconjuntos de líneas Telcel, internacionales o Webservice.
 
 ## Versión
 
-Versión actual: **1.10**
+Versión actual: **1.11**
 
 El archivo `VERSION` contiene la versión vigente del proyecto.
 
@@ -38,14 +38,15 @@ Permite:
 - Filtrar IDs concretos con `?ids=ID1,ID2,...`.
 - Exportar líneas Telcel con `?export=telcel`.
 - Exportar líneas internacionales con `?export=intl`.
+- Exportar líneas Webservice con `?export=webservice`.
 
 ## Filtro de tiempo
 
 Todas las consultas que trabajan con los rangos usan:
 
 ```sql
-reportDate <= ADDDATE(UTC_TIMESTAMP(), INTERVAL -$from MINUTE)
-AND reportDate > ADDDATE(UTC_TIMESTAMP(), INTERVAL -$to MINUTE)
+reportDate <= ADDDATE('$now_utc', INTERVAL -$from MINUTE)
+AND reportDate > ADDDATE('$now_utc', INTERVAL -$to MINUTE)
 ```
 
 Esto evita huecos y evita que una misma línea aparezca en dos rangos contiguos.
@@ -105,6 +106,19 @@ Ejemplos que deben incluirse:
 +13239701924
 ```
 
+## Exportación Webservice (desde v1.11)
+
+- URL: `?export=webservice`.
+- Archivo generado: `phone-filtered-webservice.txt` en el mismo directorio de la aplicación.
+- Solo incluye dispositivos con `i.idgpstype IN (59,60)`.
+- No se aplica un prefijo telefónico especial (`$where_number = "1=1"`); se conservan `isValid = 1`, teléfono no nulo ni cero, filtro opcional `ids` y los mismos siete rangos de antigüedad.
+- Los SQL de conteo y exportación usan la misma condición `i.idgpstype IN (59,60)` y el mismo `$now_utc`.
+- No cambia el contador de la pantalla ni las exportaciones Telcel e Internacional, que siguen excluyendo los tipos `(59,60,82,78,105,106)`.
+
+## Versionado del prompt
+
+La primera línea de `prompt.txt` contiene `# Version 1.11`. Debe actualizarse a la vez que el comentario de versión de `phones-filtered.php` y el archivo `VERSION`.
+
 ## Archivos del proyecto
 
 - `phones-filtered.php`: aplicación principal.
@@ -118,4 +132,4 @@ Ejemplos que deben incluirse:
 
 La versión inicial registrada del script es `1.6`.
 
-La versión actual de esta entrega es `1.10`.
+La versión actual de esta entrega es `1.11`.

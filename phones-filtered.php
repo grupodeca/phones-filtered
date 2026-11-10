@@ -10,7 +10,7 @@
 	<!-- jQuery 3.7.1 -->
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-	<title>Líneas telefónicas sin reportar - v1.10</title>
+	<title>Líneas telefónicas sin reportar - v1.11</title>
 
 	<style>
 		.range-block { display: block; }
@@ -22,7 +22,7 @@
 
 <?php
 // =====================================
-// phones-filtered.php — versión 1.10
+// phones-filtered.php — versión 1.11
 // Compatible con PHP 5.4.16
 // =====================================
 
@@ -82,9 +82,17 @@ if (isset($_GET['export'])) {
 
 	$tipo = $_GET['export'];
 
+	// Los tipos excluidos se mantienen para las exportaciones existentes.
+	$where_gpstype = "i.idgpstype NOT IN (59,60,82,78,105,106)";
+
 	if ($tipo == "telcel") {
 		$filename = "phone-filtered-telcel.txt";
 		$where_number = "phoneNumber LIKE '844%'";
+	} elseif ($tipo == "webservice") {
+		$filename = "phone-filtered-webservice.txt";
+		// Webservice solo filtra por tipo de GPS, sin prefijo telefónico adicional.
+		$where_number = "1=1";
+		$where_gpstype = "i.idgpstype IN (59,60)";
 	} else {
 		$filename = "phone-filtered-internacional.txt";
 		$where_number = $where_internacional;
@@ -106,7 +114,7 @@ if (isset($_GET['export'])) {
 			AND reportDate > ADDDATE('$now_utc', INTERVAL -$to MINUTE)
 			AND phoneNumber IS NOT NULL
 			AND phoneNumber != 0
-			AND i.idgpstype NOT IN (59,60,82,78,105,106)
+			AND $where_gpstype
 			$ids;
 		";
 
@@ -127,7 +135,7 @@ if (isset($_GET['export'])) {
 			AND reportDate > ADDDATE('$now_utc', INTERVAL -$to MINUTE)
 			AND phoneNumber IS NOT NULL
 			AND phoneNumber != 0
-			AND i.idgpstype NOT IN (59,60,82,78,105,106)
+			AND $where_gpstype
 			$ids
 			ORDER BY reportDate DESC;
 		";
@@ -186,14 +194,19 @@ if (isset($_GET['export'])) {
 
 	<!-- BOTONES EXPORTACIÓN (YA NO ABREN nueva ventana) -->
 	<div class="row">
-		<div class="col-md-6 mb-2">
+		<div class="col-md-4 mb-2">
 			<a href="?export=telcel" class="btn btn-success w-100">
 				Exportar Telcel
 			</a>
 		</div>
-		<div class="col-md-6 mb-2">
+		<div class="col-md-4 mb-2">
 			<a href="?export=intl" class="btn btn-warning w-100">
 				Exportar Internacional
+			</a>
+		</div>
+		<div class="col-md-4 mb-2">
+			<a href="?export=webservice" class="btn btn-primary w-100">
+				Exportar Webservice
 			</a>
 		</div>
 	</div>

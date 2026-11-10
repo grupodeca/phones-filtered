@@ -1,4 +1,4 @@
-# Diagrama funcional — phones-filtered v1.10
+# Diagrama funcional — phones-filtered v1.11
 
 ```mermaid
 flowchart TD
@@ -14,11 +14,13 @@ flowchart TD
 
 	F -- telcel --> G[Aplicar phoneNumber LIKE 844%]
 	F -- intl --> H[Aplicar filtro internacional]
+	F -- webservice --> W[Tipos GPS 59 o 60, sin prefijo telefónico]
 
 	H --> H1[Formato +1 + 10 dígitos]
 	H --> H2[OR formato 1 + 10 dígitos]
 
 	G --> I[Generar archivo TXT]
+	W --> I
 	H1 --> I
 	H2 --> I
 
@@ -32,7 +34,7 @@ flowchart TD
 	O --> Q[Aplicar filtro visual de rangos con jQuery]
 ```
 
-## Rangos de tiempo de la versión 1.10
+## Rangos de tiempo de la versión 1.11
 
 ```text
 [10, 60)
@@ -69,3 +71,7 @@ Esto hace que cada frontera pertenezca a un solo rango, que no existan huecos y 
 ```
 
 La condición es un `OR`: basta con que el número cumpla uno de los dos formatos.
+
+## Exportación Webservice
+
+El parámetro `?export=webservice` crea `phone-filtered-webservice.txt`. Tanto el conteo como la exportación aplican `i.idgpstype IN (59,60)` y conservan los filtros comunes, el instante fijo `$now_utc` y los rangos de tiempo. Los botones Telcel e Internacional conservan la exclusión de tipos anterior.
