@@ -1,11 +1,12 @@
-# Diagrama funcional — phones-filtered v1.11
+# Diagrama funcional — phones-filtered v1.12
 
 ```mermaid
 flowchart TD
 	A[Petición HTTP a phones-filtered.php] --> B[Conectar a pwd5_server]
 	B --> B1[Fijar now_utc una sola vez]
 	B1 --> C[Leer parámetros extra, ids y export]
-	C --> D[Definir rangos continuos de tiempo]
+	C --> N0[Mostrar acordeón Notas inicialmente cerrado]
+	N0 --> D[Definir rangos continuos de tiempo]
 	D --> D1[Aplicar intervalo from <= antigüedad < to]
 	D1 --> E{¿Se solicitó export?}
 
@@ -34,7 +35,7 @@ flowchart TD
 	O --> Q[Aplicar filtro visual de rangos con jQuery]
 ```
 
-## Rangos de tiempo de la versión 1.11
+## Rangos de tiempo de la versión 1.12
 
 ```text
 [10, 60)
@@ -75,3 +76,7 @@ La condición es un `OR`: basta con que el número cumpla uno de los dos formato
 ## Exportación Webservice
 
 El parámetro `?export=webservice` crea `phone-filtered-webservice.txt`. Tanto el conteo como la exportación aplican `i.idgpstype IN (59,60)` y conservan los filtros comunes, el instante fijo `$now_utc` y los rangos de tiempo. Los botones Telcel e Internacional conservan la exclusión de tipos anterior.
+
+## Notas informativas (desde v1.12)
+
+Debajo de la hora, el acordeón **Notas** está contraído al cargar la página. Al desplegarlo aparecen los mismos tres avisos de Helpdesk Telcel y PDPs, sin alterar sus textos. Se conserva la lógica anterior de exportación y filtrado.

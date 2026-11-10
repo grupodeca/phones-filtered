@@ -2,6 +2,18 @@
 
 Todos los cambios relevantes del proyecto se documentan en este archivo.
 
+## 1.12 - 2026-11-10
+
+### Interfaz
+
+- Las tres notas informativas existentes se agruparon en un acordeón Bootstrap titulado **Notas**.
+- El acordeón inicia cerrado (`collapsed` y `aria-expanded="false"`, sin clase `show`) y puede desplegarse manualmente.
+- Se conservaron los mensajes y las clases `alert alert-primary` originales, además de los filtros, la tabla y los tres botones de exportación.
+
+### Versionado y documentación
+
+- Se actualizaron `phones-filtered.php`, `prompt.txt` (primera línea), `VERSION`, `README.md`, `CHANGELOG.md` y `DIAGRAM.md` a la versión 1.12.
+
 ## 1.11 - 2026-11-09
 
 ### Agregado

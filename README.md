@@ -4,7 +4,7 @@ Aplicación PHP para consultar líneas telefónicas asociadas a dispositivos GPS
 
 ## Versión
 
-Versión actual: **1.11**
+Versión actual: **1.12**
 
 El archivo `VERSION` contiene la versión vigente del proyecto.
 
@@ -39,6 +39,10 @@ Permite:
 - Exportar líneas Telcel con `?export=telcel`.
 - Exportar líneas internacionales con `?export=intl`.
 - Exportar líneas Webservice con `?export=webservice`.
+
+## Notas informativas (v1.12)
+
+Las tres notas originales de Helpdesk Telcel (reseteo de línea, borrado de registro y PDPs) se muestran dentro de un acordeón Bootstrap 5.3.8 titulado **Notas**, situado debajo de la fecha y hora y antes de los filtros. El panel inicia cerrado y puede abrirse o cerrarse con el botón. Los tres mensajes conservan su contenido y estilo `alert alert-primary` sin cambios.
 
 ## Filtro de tiempo
 
@@ -117,7 +121,7 @@ Ejemplos que deben incluirse:
 
 ## Versionado del prompt
 
-La primera línea de `prompt.txt` contiene `# Version 1.11`. Debe actualizarse a la vez que el comentario de versión de `phones-filtered.php` y el archivo `VERSION`.
+La primera línea de `prompt.txt` contiene `# Version 1.12`. Debe actualizarse a la vez que el comentario de versión de `phones-filtered.php` y el archivo `VERSION`.
 
 ## Archivos del proyecto
 
@@ -132,4 +136,4 @@ La primera línea de `prompt.txt` contiene `# Version 1.11`. Debe actualizarse a
 
 La versión inicial registrada del script es `1.6`.
 
-La versión actual de esta entrega es `1.11`.
+La versión actual de esta entrega es `1.12`.

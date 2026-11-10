@@ -10,7 +10,7 @@
 	<!-- jQuery 3.7.1 -->
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-	<title>Líneas telefónicas sin reportar - v1.11</title>
+	<title>Líneas telefónicas sin reportar - v1.12</title>
 
 	<style>
 		.range-block { display: block; }
@@ -22,7 +22,7 @@
 
 <?php
 // =====================================
-// phones-filtered.php — versión 1.11
+// phones-filtered.php — versión 1.12
 // Compatible con PHP 5.4.16
 // =====================================
 
@@ -70,9 +70,25 @@ echo "<h3 class='mb-3'>" . date('Y-m-d H:i:s T') . "</h3>";
 
 $offset = date('Z') / 3600;
 
+// Notas informativas: acordeón Bootstrap cerrado inicialmente.
+echo "<div class='accordion mb-4' id='notasAccordion'>
+        <div class='accordion-item'>
+            <h2 class='accordion-header' id='notasHeading'>
+                <button class='accordion-button collapsed' type='button' data-bs-toggle='collapse'
+                    data-bs-target='#notasCollapse' aria-expanded='false' aria-controls='notasCollapse'>
+                    Notas
+                </button>
+            </h2>
+            <div id='notasCollapse' class='accordion-collapse collapse'
+                aria-labelledby='notasHeading' data-bs-parent='#notasAccordion'>
+                <div class='accordion-body'>";
 echo "<div class='alert alert-primary'>Helpdesk Telcel puede realizar <strong>RESETEO</strong> de línea, borra la sesión de datos ya sea 2G, 3G, 4G o 5G.</div>";
 echo "<div class='alert alert-primary'>Helpdesk Telcel puede realizar <strong>BORRADO DE REGISTRO</strong>, desconecta la línea de la red móvil de Telcel.</div>";
 echo "<div class='alert alert-primary'>PDPs = sesiones activas en el APN DECA.ITELCEL.COM.</div>";
+echo "        </div>
+            </div>
+        </div>
+    </div>";
 
 // =====================================
 // EXPORTACIÓN TXT
