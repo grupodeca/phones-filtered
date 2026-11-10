@@ -9,6 +9,7 @@
 5. Todos los cambios que se pidan no los vas a subir a Github. Me vas a mostrar siempre la nueva version en la pantalla del navegador para hacerle copy. Yo soy quien va a subir manualmente desde macOS los cambios que me pases. Conclusion todos los cambios que hagas me tienes que dar la opcion de descargarlos en el chat o hacerles copy/paste.
 6. Actualizar la version de bootstrap a la ultima version del release 5.3.x sin que se rompa nada en la vista de la pagina. Se tiene que ver igual como esta ahorita y tener el mismo funcionamiento que tiene ahorita.
 7. La primera línea de `prompt.txt` debe indicar la versión actual y coincidir con la versión de `phones-filtered.php` y `VERSION`.
+8. Siempre que vayas a preparar una version nueva tienes que tomar como base la ultima version que este en github de `phones-filtered.php`.
 
 # Objetivo
 
@@ -217,5 +218,4 @@ $sql = "
 Asi se deberá repetir para cada bloque de visualizacion.
 
 Todo el funcionanmiento anterior debe estar igual a menos que lo exprese en otro paso siguiente.
-
 
