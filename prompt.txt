@@ -1,3 +1,5 @@
+# Version 1.10
+
 # Requerimientos
 
 1. Tener el proyecto de phones-filtered.php en Github en la siguiente URL: https://github.com/grupodeca/phones-filtered.git
@@ -59,3 +61,49 @@ De esta forma un registro no puede cambiar de periodo durante la misma ejecució
 
 4. Mantener las etiquetas de horas calculadas con "$from/60" y "$to/60", redondeadas a dos decimales. Por ejemplo, 10 minutos equivalen a 0.1667 horas y deben mostrarse como "0.17 hr". No volver a usar "($from-1)/60".
 
+5. Agregar opcion para exportar lineas que son tipo `webservice`.
+
+En estos momentos debe de haber estos 2:
+- https://www.decawebservice-01.com/telcel/phones-filtered.php?export=telcel
+- https://www.decawebservice-01.com/telcel/phones-filtered.php?export=intl
+
+Se agregará el tipo `webservice` como se muestra en el siguiente URL:
+- https://www.decawebservice-01.com/telcel/phones-filtered.php?export=webservice
+
+Cuando sea de este tipo el archivo que se debe de crear es:
+- https://www.decawebservice-01.com/telcel/phone-filtered-webservice.txt
+
+En la seccion de `EXPORTACIÓN TXT` estos SQL deben ser de la siguiente manera para el tipo webservice solamente:
+
+```sql
+$sql_tipo_count = "
+	SELECT COUNT(*) AS c
+	FROM pwd5_server.gps_info i
+	WHERE isValid = 1
+	AND $where_number
+	AND reportDate <= ADDDATE('$now_utc', INTERVAL -$from MINUTE)
+	AND reportDate > ADDDATE('$now_utc', INTERVAL -$to MINUTE)
+	AND phoneNumber IS NOT NULL
+	AND phoneNumber != 0
+	AND i.idgpstype IN (59,60)
+	$ids;
+";
+
+$sql_export = "
+	SELECT phoneNumber
+	FROM pwd5_server.gps_info i
+	WHERE isValid = 1
+	AND $where_number
+	AND reportDate <= ADDDATE('$now_utc', INTERVAL -$from MINUTE)
+	AND reportDate > ADDDATE('$now_utc', INTERVAL -$to MINUTE)
+	AND phoneNumber IS NOT NULL
+	AND phoneNumber != 0
+	AND i.idgpstype IN (59,60)
+	$ids
+	ORDER BY reportDate DESC;
+";
+```
+
+En la seccion de `FILTROS + BOTONES EXPORTAR` agrega un tercer boton `Exportar Webservice` al lado derecho del boton `Exportar Internacional` que ejecutará el URL https://www.decawebservice-01.com/telcel/phones-filtered.php?export=webservice
+
+Todo el funcionanmiento anterior debe funcionar igual a menos que lo exprese en otro paso siguiente.
