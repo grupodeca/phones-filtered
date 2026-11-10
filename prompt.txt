@@ -108,3 +108,10 @@ $sql_export = "
 En la seccion de `FILTROS + BOTONES EXPORTAR` agrega un tercer boton `Exportar Webservice` al lado derecho del boton `Exportar Internacional` que ejecutará el URL https://www.decawebservice-01.com/telcel/phones-filtered.php?export=webservice
 
 Todo el funcionanmiento anterior debe funcionar igual a menos que lo exprese en otro paso siguiente.
+
+6. Esta parte informativa de la pagina debe quedar en un accordion que diga notas. Por defecto debe aparecer al principio simpre oculto.
+
+```echo "<div class='alert alert-primary'>Helpdesk Telcel puede realizar <strong>RESETEO</strong> de línea, borra la sesión de datos ya sea 2G, 3G, 4G o 5G.</div>";
+echo "<div class='alert alert-primary'>Helpdesk Telcel puede realizar <strong>BORRADO DE REGISTRO</strong>, desconecta la línea de la red móvil de Telcel.</div>";
+echo "<div class='alert alert-primary'>PDPs = sesiones activas en el APN DECA.ITELCEL.COM.</div>";
+```
