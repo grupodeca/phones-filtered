@@ -107,11 +107,115 @@ $sql_export = "
 
 En la seccion de `FILTROS + BOTONES EXPORTAR` agrega un tercer boton `Exportar Webservice` al lado derecho del boton `Exportar Internacional` que ejecutará el URL https://www.decawebservice-01.com/telcel/phones-filtered.php?export=webservice
 
-Todo el funcionanmiento anterior debe funcionar igual a menos que lo exprese en otro paso siguiente.
+Todo el funcionanmiento anterior debe estar igual a menos que lo exprese en otro paso siguiente.
 
 6. Esta parte informativa de la pagina debe quedar en un accordion que diga notas. Por defecto debe aparecer al principio simpre oculto.
 
-```echo "<div class='alert alert-primary'>Helpdesk Telcel puede realizar <strong>RESETEO</strong> de línea, borra la sesión de datos ya sea 2G, 3G, 4G o 5G.</div>";
-echo "<div class='alert alert-primary'>Helpdesk Telcel puede realizar <strong>BORRADO DE REGISTRO</strong>, desconecta la línea de la red móvil de Telcel.</div>";
-echo "<div class='alert alert-primary'>PDPs = sesiones activas en el APN DECA.ITELCEL.COM.</div>";
 ```
+echo "
+<div class='accordion mb-4' id='notasAccordion'>
+	<div class='accordion-item border border-primary'
+		 style='--bs-accordion-border-color: var(--bs-primary); border-color: var(--bs-primary) !important;'>
+		<h2 class='accordion-header' id='notasHeading'>
+			<button class='accordion-button collapsed' type='button'
+				data-bs-toggle='collapse'
+				data-bs-target='#notasCollapse'
+				aria-expanded='false'
+				aria-controls='notasCollapse'>
+
+				<i class='bi bi-exclamation-circle text-primary me-2' aria-hidden='true'></i>
+				Notas
+			</button>
+		</h2>
+
+		<div id='notasCollapse'
+			 class='accordion-collapse collapse'
+			 aria-labelledby='notasHeading'
+			 data-bs-parent='#notasAccordion'>
+			<div class='accordion-body'>
+				<ul class='list-unstyled mb-0'>
+					<li><strong>RESETEO:</strong> Helpdesk Telcel puede realizar <strong>RESETEO</strong> de línea, borra la sesión de datos ya sea 2G, 3G, 4G o 5G.</li>
+					<li><strong>BORRADO DE REGISTRO:</strong> Helpdesk Telcel puede realizar <strong>BORRADO DE REGISTRO</strong>, desconecta la línea de la red móvil de Telcel.</li>
+					<li><strong>PDPs:</strong> Sesiones activas en el APN DECA.ITELCEL.COM.</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>";
+```
+
+Todo el funcionanmiento anterior debe estar igual a menos que lo exprese en otro paso siguiente.
+
+7. Ahora en los BLOQUES DE VISUALIZACIÓN tambien se deben de incluir las lineas de tipo Webservice 59 y 60. Siguiendo este ejemplo ilustrativo el primer BLOQUE de VISUALIZACIÓN debera quedar como sigue:
+
+```
+Líneas de 10 min (0.17 hr) a 60 min (1 hr) sin reportar (44)
+  Telcel: 30
+  Internacional: 12
+  Webservice: 4
+
+TABLA CON LAS LINEAS
+```
+
+Tambien la opcion de `extra=true` ya debe venir por defecto sin tener que poner al final del URL `extra=true`. Ahora por defecto deberá mostrarse en la tabla el `ID GPS` - `Teléfono` - `Último reporte` - `Tipo`.
+
+El primer count deberia de quedar asi porque ahora los tipo 59 y 60 si deben de aparecer en el conteo total:
+```
+$sql_count = "
+	SELECT COUNT(*) AS count
+	FROM pwd5_server.gps_info i
+	WHERE isValid = 1
+	AND reportDate <= ADDDATE('$now_utc', INTERVAL -$from MINUTE)
+	AND reportDate > ADDDATE('$now_utc', INTERVAL -$to MINUTE)
+	AND reportDate != '0000-00-00 00:00:00'
+	AND phoneNumber != 0
+	AND phoneNumber IS NOT NULL
+	AND i.idgpstype NOT IN (82,78,105,106)
+	$ids;
+";
+```
+
+Para sacar el conteo de las lineas tipo webservice el sql deberia ser asi:
+```
+$sql_telcel = "
+	SELECT COUNT(*) AS c
+	FROM pwd5_server.gps_info i
+	WHERE isValid = 1
+	AND phoneNumber LIKE '844%'
+	AND reportDate <= ADDDATE('$now_utc', INTERVAL -$from MINUTE)
+	AND reportDate > ADDDATE('$now_utc', INTERVAL -$to MINUTE)
+	AND phoneNumber != 0
+	AND phoneNumber IS NOT NULL
+	AND i.idgpstype IN (59,60)
+	$ids;
+";
+```
+
+Para sacar la informacion de las lineas que se pone en la tabla el SQL deberia quedar asi porque ya aparecera las lineas tipo webservice 50 y 60:
+
+```
+$sql = "
+	SELECT
+		idGPS,
+		phoneNumber,
+		ADDDATE(reportDate, INTERVAL $offset HOUR) AS reportDate,
+		t.description_es
+	FROM pwd5_server.gps_info i
+	LEFT JOIN gps_types t ON (i.idGPSType = t.idGPSType)
+	WHERE isValid = 1
+	AND reportDate <= ADDDATE('$now_utc', INTERVAL -$from MINUTE)
+	AND reportDate > ADDDATE('$now_utc', INTERVAL -$to MINUTE)
+	AND phoneNumber != 0
+	AND phoneNumber IS NOT NULL
+	AND reportDate != '0000-00-00 00:00:00'
+	AND i.idgpstype NOT IN (82,78,105,106)
+	$ids
+	ORDER BY reportDate DESC;
+";
+```
+
+Asi se deberá repetir para cada bloque de visualizacion.
+
+Todo el funcionanmiento anterior debe estar igual a menos que lo exprese en otro paso siguiente.
+
+
