@@ -2,6 +2,26 @@
 
 Todos los cambios relevantes del proyecto se documentan en este archivo.
 
+## 1.13 - 2026-11-10
+
+### Bloques de visualización
+
+- Se incluyeron dispositivos Webservice de tipos GPS `59` y `60` en el total por rango y en el detalle de la tabla.
+- La exclusión de la visualización pasa a `i.idgpstype NOT IN (82,78,105,106)`.
+- Se añadió el contador **Webservice** con `i.idgpstype IN (59,60)`, sin prefijo telefónico, igual que en la exportación.
+- Los contadores Telcel e Internacional conservan sus filtros previos y excluyen los tipos Webservice.
+- `extra` ahora vale `true` por defecto para mostrar `ID GPS`, `Teléfono`, `Último reporte` y `Tipo` sin parámetros adicionales; se permite `?extra=false`.
+
+### Conservado
+
+- Se mantuvo exactamente el acordeón **Notas** actualizado manualmente por el usuario (borde `border-primary` e icono Bootstrap Icons).
+- Exportaciones, lógica de rangos, timestamp UTC fijo y dependencias Bootstrap/jQuery sin cambios.
+
+### Documentación
+
+- Versiones sincronizadas en `prompt.txt`, `phones-filtered.php`, `VERSION`, `README.md`, `CHANGELOG.md` y `DIAGRAM.md`.
+- Se conservó el texto original de los requisitos en `prompt.txt`, incluido el ejemplo ilustrativo que llama `$sql_telcel` a la consulta de tipos Webservice; el código usa `$sql_webservice` y no aplica `LIKE '844%'`, para corresponder con los objetivos 5 y 7.
+
 ## 1.12 - 2026-11-10
 
 ### Interfaz

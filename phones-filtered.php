@@ -13,7 +13,7 @@
 	<!-- jQuery 3.7.1 -->
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-	<title>Líneas telefónicas sin reportar - v1.12</title>
+	<title>Líneas telefónicas sin reportar - v1.13</title>
 
 	<style>
 		.range-block { display: block; }
@@ -25,7 +25,7 @@
 
 <?php
 // =====================================
-// phones-filtered.php — versión 1.12
+// phones-filtered.php — versión 1.13
 // Compatible con PHP 5.4.16
 // =====================================
 
@@ -40,7 +40,7 @@ if (mysqli_connect_errno()) {
 	exit;
 }
 
-$extra = (array_key_exists("extra", $_GET) ? filter_var($_GET["extra"], FILTER_VALIDATE_BOOLEAN) : false);
+$extra = (array_key_exists("extra", $_GET) ? filter_var($_GET["extra"], FILTER_VALIDATE_BOOLEAN) : true);
 
 if (array_key_exists("ids", $_GET)) {
 	$ids      = explode(",", $_GET["ids"]);
@@ -260,7 +260,7 @@ foreach ($minutos as $from => $to) {
 		AND reportDate != '0000-00-00 00:00:00'
 		AND phoneNumber != 0
 		AND phoneNumber IS NOT NULL
-		AND i.idgpstype NOT IN (59,60,82,78,105,106)
+		AND i.idgpstype NOT IN (82,78,105,106)
 		$ids;
 	";
 
@@ -299,6 +299,20 @@ foreach ($minutos as $from => $to) {
 
 		$INTL = intval(mysqli_fetch_array(mysqli_query($PY_DB1_server, $sql_intl))['c']);
 
+		$sql_webservice = "
+			SELECT COUNT(*) AS c
+			FROM pwd5_server.gps_info i
+			WHERE isValid = 1
+			AND reportDate <= ADDDATE('$now_utc', INTERVAL -$from MINUTE)
+			AND reportDate > ADDDATE('$now_utc', INTERVAL -$to MINUTE)
+			AND phoneNumber != 0
+			AND phoneNumber IS NOT NULL
+			AND i.idgpstype IN (59,60)
+			$ids;
+		";
+
+		$WEBSERVICE = intval(mysqli_fetch_array(mysqli_query($PY_DB1_server, $sql_webservice))['c']);
+
 		$sql = "
 			SELECT
 				idGPS,
@@ -313,7 +327,7 @@ foreach ($minutos as $from => $to) {
 			AND phoneNumber != 0
 			AND phoneNumber IS NOT NULL
 			AND reportDate != '0000-00-00 00:00:00'
-			AND i.idgpstype NOT IN (59,60,82,78,105,106)
+			AND i.idgpstype NOT IN (82,78,105,106)
 			$ids
 			ORDER BY reportDate DESC;
 		";
@@ -328,7 +342,8 @@ foreach ($minutos as $from => $to) {
 
 		echo "<p class='ms-3'>
 				<strong>Telcel:</strong> $TELCEL<br>
-				<strong>Internacional:</strong> $INTL
+				<strong>Internacional:</strong> $INTL<br>
+				<strong>Webservice:</strong> $WEBSERVICE
 			  </p>";
 
 		echo "<table class='table table-striped table-hover'>";

@@ -4,7 +4,7 @@ Aplicación PHP para consultar líneas telefónicas asociadas a dispositivos GPS
 
 ## Versión
 
-Versión actual: **1.12**
+Versión actual: **1.13**
 
 El archivo `VERSION` contiene la versión vigente del proyecto.
 
@@ -34,7 +34,7 @@ Los límites se manejan como intervalos `[from, to)`: el límite inicial está i
 Permite:
 
 - Mostrar todos los rangos o seleccionar rangos específicos desde la interfaz.
-- Mostrar columnas adicionales con `?extra=true`.
+- Mostrar columnas adicionales con `?extra=true` (habilitado por defecto; `?extra=false` permite ocultar ID GPS y Tipo).
 - Filtrar IDs concretos con `?ids=ID1,ID2,...`.
 - Exportar líneas Telcel con `?export=telcel`.
 - Exportar líneas internacionales con `?export=intl`.
@@ -42,7 +42,7 @@ Permite:
 
 ## Notas informativas (v1.12)
 
-Las tres notas originales de Helpdesk Telcel (reseteo de línea, borrado de registro y PDPs) se muestran dentro de un acordeón Bootstrap 5.3.8 titulado **Notas**, situado debajo de la fecha y hora y antes de los filtros. El panel inicia cerrado y puede abrirse o cerrarse con el botón. Los tres mensajes conservan su contenido y estilo `alert alert-primary` sin cambios.
+Las tres notas originales de Helpdesk Telcel (reseteo de línea, borrado de registro y PDPs) se muestran dentro de un acordeón Bootstrap 5.3.8 titulado **Notas**, situado debajo de la fecha y hora y antes de los filtros. El panel inicia cerrado y puede abrirse o cerrarse con el botón. Se conserva el estilo personalizado actual: borde azul `border-primary`, ícono `bi-exclamation-circle` y mensajes dentro de una lista.
 
 ## Filtro de tiempo
 
@@ -117,11 +117,21 @@ Ejemplos que deben incluirse:
 - Solo incluye dispositivos con `i.idgpstype IN (59,60)`.
 - No se aplica un prefijo telefónico especial (`$where_number = "1=1"`); se conservan `isValid = 1`, teléfono no nulo ni cero, filtro opcional `ids` y los mismos siete rangos de antigüedad.
 - Los SQL de conteo y exportación usan la misma condición `i.idgpstype IN (59,60)` y el mismo `$now_utc`.
-- No cambia el contador de la pantalla ni las exportaciones Telcel e Internacional, que siguen excluyendo los tipos `(59,60,82,78,105,106)`.
+- Las exportaciones Telcel e Internacional siguen excluyendo los tipos `(59,60,82,78,105,106)`. La vista principal sí incluye los tipos Webservice `59` y `60` desde la versión 1.13.
+
+
+## Bloques de visualización (desde v1.13)
+
+- El total por rango y la tabla incluyen los tipos GPS `59` y `60` (Webservice) y excluyen únicamente `(82,78,105,106)`.
+- Se muestran los contadores **Telcel**, **Internacional** y **Webservice** en cada bloque que tenga registros.
+- El contador **Webservice** usa `i.idgpstype IN (59,60)` sin restricción de prefijo telefónico, igual que la exportación Webservice.
+- Los contadores **Telcel** e **Internacional** conservan sus filtros y siguen excluyendo los tipos `59` y `60` para que no se contabilicen en esas categorías.
+- De forma predeterminada se muestran **ID GPS**, **Teléfono**, **Último reporte** y **Tipo**. La opción `?extra=false` mantiene disponible la vista reducida.
+- Se conservan la hora UTC fija, los rangos `[from, to)` y el filtro opcional `ids`.
 
 ## Versionado del prompt
 
-La primera línea de `prompt.txt` contiene `# Version 1.12`. Debe actualizarse a la vez que el comentario de versión de `phones-filtered.php` y el archivo `VERSION`.
+La primera línea de `prompt.txt` contiene `# Version 1.13`. Debe actualizarse a la vez que el comentario de versión de `phones-filtered.php` y el archivo `VERSION`.
 
 ## Archivos del proyecto
 
@@ -136,4 +146,4 @@ La primera línea de `prompt.txt` contiene `# Version 1.12`. Debe actualizarse a
 
 La versión inicial registrada del script es `1.6`.
 
-La versión actual de esta entrega es `1.12`.
+La versión actual de esta entrega es `1.13`.
